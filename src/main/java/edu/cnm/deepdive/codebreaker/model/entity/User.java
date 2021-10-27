@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.codebreaker.model.entity;
 
+import java.util.Date;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Entity
 public class User {
 
+
   @Id
   @GeneratedValue
   @Column(name = "user_id", updatable = false, columnDefinition = "UUID")
@@ -20,9 +22,42 @@ public class User {
   @Column(updatable = false, nullable = false, unique = true, columnDefinition = "UUID")
   private UUID externalKey = UUID.randomUUID();
 
-
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false, updatable = false)
   private Date created;
+
+  @Column(nullable = false, updatable = false, unique = true, length = 30)
+  private String oauthKey;
+
+  @Column(nullable = false, updatable = true, unique = true, length = 100)
+  private String displayName;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public UUID getExternalKey() {
+    return externalKey;
+  }
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public String getOauthKey() {
+    return oauthKey;
+  }
+
+  public void setOauthKey(String oauthKey) {
+    this.oauthKey = oauthKey;
+  }
+
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
+  }
 }
