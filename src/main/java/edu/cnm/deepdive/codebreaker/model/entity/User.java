@@ -10,15 +10,23 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
+@Table(
+    name = "user_profile",
+    indexes = {
+        @Index(columnList = "created")
+    }
+)
 public class User {
-
 
   @Id
   @GeneratedValue

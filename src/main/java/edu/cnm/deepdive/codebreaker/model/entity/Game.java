@@ -1,6 +1,5 @@
 package edu.cnm.deepdive.codebreaker.model.entity;
 
-
 import java.util.Date;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -23,7 +22,7 @@ public class Game {
   @Column(name = "game_id", updatable = false, columnDefinition = "UUID")
   private UUID id;
 
-  @Column(nullable = false, updatable = false, columnDefinition = "UUID")
+  @Column(nullable = false, updatable = false, columnDefinition = "UUID", unique = true)
   private UUID externalKey = UUID.randomUUID();
 
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -87,4 +86,5 @@ public class Game {
   public void setText(String text) {
     this.text = text;
   }
+
 }
