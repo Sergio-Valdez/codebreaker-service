@@ -14,6 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+/**
+ * This class implements the high-level persistence and business logic for the {@link User} entity.
+ */
 @Service
 public class UserService implements Converter<Jwt, UsernamePasswordAuthenticationToken> {
 
@@ -33,6 +36,12 @@ public class UserService implements Converter<Jwt, UsernamePasswordAuthenticatio
         source.getTokenValue(), grants);
   }
 
+  /**
+   * This is the getOrCreate method.
+   * @param oauthKey
+   * @param displayName
+   * @return
+   */
   public User getOrCreate(String oauthKey, String displayName) {
     return repository
         .findByOauthKey(oauthKey)
@@ -52,6 +61,10 @@ public class UserService implements Converter<Jwt, UsernamePasswordAuthenticatio
     return repository.findByExternalKey(key);
   }
 
+  /**
+   *
+   * @return
+   */
   public Iterable<User> getAll() {
     return repository.getAllByOrderByDisplayNameAsc();
   }
@@ -64,11 +77,32 @@ public class UserService implements Converter<Jwt, UsernamePasswordAuthenticatio
     repository.delete(user);
   }
 
+  /**
+   * Returns the {@link User} instance asspciated with the authenticated sender of the current
+   * request.
+   *
+   * @return
+   */
   public User getCurrentUser() {
     return (User) SecurityContextHolder
         .getContext()
         .getAuthentication()
         .getPrincipal();
+  }
+
+  /**
+   * Updates the current user records from the provided updated user, and saves the result to the
+   * database.
+   *
+   * @param updatedUser User deserialized from body of request.
+   * @param user Current requestor.
+   * @return Updated user instance
+   */
+  public User update(User updatedUser, User user) {
+    if (updatedUser.getDisplayName() != null) {
+      user.setDisplayName(updatedUser.getDisplayName());
+    }
+    return save(user);
   }
 
 }
